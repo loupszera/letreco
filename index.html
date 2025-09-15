@@ -12,7 +12,7 @@
 </head>
 <body class="bg-amber-50 text-stone-800 flex flex-col items-center justify-between min-h-screen p-2 sm:p-4" style="background-image: url('img/fundo.svg'); background-size: cover; background-repeat: no-repeat; background-position: center;">
     <!-- Card de instruções -->
-    <aside class="fixed right-4 top-24 bg-white bg-opacity-90 border border-amber-300 rounded-lg shadow-lg p-4 w-72 z-40 text-stone-800 text-sm font-medium" style="max-width: 90vw;">
+    <aside id="tutorial-card" class="fixed right-4 top-24 bg-white bg-opacity-90 border border-amber-300 rounded-lg shadow-lg p-4 w-72 z-40 text-stone-800 text-sm font-medium" style="max-width: 90vw;">
         <h2 class="text-lg font-bold mb-2 text-amber-700">Como jogar?</h2>
         <ul class="list-disc pl-4">
             <li>Descubra a palavra de 5 letras do dia.</li>
@@ -20,9 +20,10 @@
             <li>As cores mostram se as letras estão corretas ou na posição certa.</li>
             <li>Você tem 6 tentativas!</li>
         </ul>
+        <button id="close-tutorial" class="hidden sm:hidden absolute top-2 right-2 bg-amber-200 text-amber-700 rounded-full px-2 py-1 text-xs font-bold shadow hover:bg-amber-300" style="display:none;">Fechar</button>
         <style>
             @media (max-width: 640px) {
-                aside[role="tutorial"] {
+                #tutorial-card {
                     position: fixed !important;
                     left: 50% !important;
                     bottom: 12px !important;
@@ -32,6 +33,9 @@
                     width: 95vw !important;
                     max-width: 95vw !important;
                     z-index: 40 !important;
+                }
+                #close-tutorial {
+                    display: block !important;
                 }
             }
         </style>
@@ -84,8 +88,27 @@
     </div>
 
     <script>
+        // Tutorial card close logic for mobile
+        function setupTutorialCard() {
+            const card = document.getElementById('tutorial-card');
+            const closeBtn = document.getElementById('close-tutorial');
+            function checkMobile() {
+                if (window.innerWidth <= 640) {
+                    closeBtn.style.display = 'block';
+                } else {
+                    closeBtn.style.display = 'none';
+                    card.style.display = 'block';
+                }
+            }
+            closeBtn.addEventListener('click', () => {
+                card.style.display = 'none';
+            });
+            window.addEventListener('resize', checkMobile);
+            checkMobile();
+        }
         document.addEventListener('DOMContentLoaded', () => {
             // --- GAME CONFIGURATION ---
+            setupTutorialCard();
             const WORD_LENGTH = 5;
             const MAX_GUESSES = 6;
             const FLIP_ANIMATION_DELAY = 300; // ms per letter
