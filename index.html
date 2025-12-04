@@ -9,6 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        #google-arts-link {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #google-arts-link:hover {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body class="bg-amber-50 text-stone-800 flex flex-col items-center justify-between min-h-screen p-2 sm:p-4" style="background-image: url('img/fundo.svg'); background-size: cover; background-repeat: no-repeat; background-position: center;">
     <!-- Card de instruções -->
@@ -42,9 +51,9 @@
     </aside>
 
     <!-- Logo CRAB Sebrae -->
-    <div class="flex justify-center items-center w-full max-w-md mt-2 mb-2">
+    <a href="https://crab.sebrae.com.br/" target="_blank" rel="noopener noreferrer" class="flex justify-center items-center w-full max-w-md mt-2 mb-2">
         <img src="img/crab-sebrae-branco.png" alt="Logo CRAB Sebrae" style="height: 60px; object-fit: contain;" />
-    </div>
+    </a>
     <!-- Header -->
     <header class="text-center border-b-2 border-amber-200 pb-4 w-full max-w-md">
     <h1 class="text-3xl sm:text-4xl font-bold kalam-font text-white">Palavra do Dia</h1>
@@ -88,7 +97,7 @@
     </div>
 
     <script>
-        // Tutorial card close logic for mobile
+        // Lógica para fechar o card de tutorial em dispositivos móveis
         function setupTutorialCard() {
             const card = document.getElementById('tutorial-card');
             const closeBtn = document.getElementById('close-tutorial');
@@ -107,14 +116,16 @@
             checkMobile();
         }
         document.addEventListener('DOMContentLoaded', () => {
-            // --- GAME CONFIGURATION ---
+            // --- CONFIGURAÇÃO DO JOGO ---
             setupTutorialCard();
             const WORD_LENGTH = 5;
             const MAX_GUESSES = 6;
-            const FLIP_ANIMATION_DELAY = 300; // ms per letter
+            const FLIP_ANIMATION_DELAY = 300; // ms por letra
 
-            // Word bank with clues. All words should be WORD_LENGTH letters and uppercase.
+            // Banco de palavras com dicas de artesanato brasileiro
             const wordBank = [
+
+            // Matérias-primas e técnicas do artesanato brasileiro
                 { word: "BARRO", clue: "Matéria-prima principal da cerâmica." },
                 { word: "RENDA", clue: "Tecido delicado feito com bilros." },
                 { word: "PALHA", clue: "Material natural usado em cestos e chapéus." },
@@ -122,16 +133,25 @@
                 { word: "BILRO", clue: "Peça usada para fazer renda." },
                 //{ word: "CIPOH", clue: "Fibra de videira usada em cestos." },
                 { word: "COURO", clue: "Material típico do sertão usado em roupas e sapatos." },
-                { word: "LINHO", clue: "Fibra usada em bordados e tecelagem." }
+                { word: "LINHO", clue: "Fibra usada em bordados e tecelagem." },
+
+                //
+                { word: "TINTA", clue: "Pigmento natural usado na pintura e tingimento de tecidos." },
+                { word: "TECER", clue: "Técnica de entrelaçar fios para criar tecidos e tapetes." },
+                { word: "VIDRO", clue: "Material frágil trabalhado em vitrais e peças decorativas." },
+                
+                { word: "PRATA", clue: "Metal precioso usado em joias e peças de ourivesaria." },
+                { word: "OURO", clue: "Metal nobre utilizado em joias finas e trabalhos em filigrana." },
+                { word: "BURIL", clue: "Ferramenta usada para gravar detalhes em metais e madeira." }
             ];
 
-            // --- STATE MANAGEMENT ---
+            // --- GERENCIAMENTO DE ESTADO ---
             let currentRow = 0;
             let currentCol = 0;
             let isGameOver = false;
             let solution = {};
 
-            // --- UI ELEMENTS ---
+            // --- ELEMENTOS DA INTERFACE ---
             const grid = document.getElementById('grid');
             const keyboard = document.getElementById('keyboard');
             const toast = document.getElementById('toast');
@@ -141,26 +161,26 @@
             const playAgainButton = document.getElementById('play-again-button');
             const clueText = document.getElementById('clue-text');
 
-            // --- INITIALIZATION ---
+            // --- INICIALIZAÇÃO ---
             function initializeGame() {
-                // Select word of the day based on the date
+                // Seleciona a palavra do dia com base na data
                 const today = new Date();
                 const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
                 solution = wordBank[dayOfYear % wordBank.length];
 
-                // Reset state
+                // Reseta o estado
                 currentRow = 0;
                 currentCol = 0;
                 isGameOver = false;
 
-                // Setup UI
+                // Configura a interface
                 createGrid();
                 createKeyboard();
                 updateClue();
                 modal.classList.add('hidden');
             }
 
-            // --- UI CREATION ---
+            // --- CRIAÇÃO DA INTERFACE ---
             function createGrid() {
                 grid.innerHTML = '';
                 for (let i = 0; i < MAX_GUESSES * WORD_LENGTH; i++) {
@@ -204,7 +224,7 @@
                 clueText.textContent = solution.clue;
             }
 
-            // --- EVENT HANDLING ---
+            // --- TRATAMENTO DE EVENTOS ---
             function handleKeyPress(key) {
                 if (isGameOver) return;
 
@@ -222,7 +242,7 @@
 
             playAgainButton.addEventListener('click', initializeGame);
 
-            // --- GAME LOGIC ---
+            // --- LÓGICA DO JOGO ---
             function addLetter(letter) {
                 if (currentCol < WORD_LENGTH) {
                     const tile = getTile(currentRow, currentCol);
@@ -249,8 +269,8 @@
 
                 const guess = getCurrentGuess();
                 
-                // Note: In a real scenario, you might want to check against a larger dictionary.
-                // For this game, any 5-letter word is accepted to focus on the puzzle.
+                // Nota: em um cenário real, você poderia validar contra um dicionário maior.
+                // Neste jogo, qualquer palavra com 5 letras é aceita para focar no quebra-cabeça.
 
                 flipRow(guess);
             }
@@ -268,12 +288,12 @@
                 const guessLetters = guess.split('');
                 const letterCounts = {};
 
-                // Count letters in the solution for correct/present logic
+                // Conta as letras da solução para verificar acertos e letras presentes
                 solutionLetters.forEach(letter => {
                     letterCounts[letter] = (letterCounts[letter] || 0) + 1;
                 });
 
-                // First pass: find correct (green) letters
+                // Primeira passagem: encontra letras corretas (verdes)
                 guessLetters.forEach((letter, index) => {
                     if (letter === solutionLetters[index]) {
                         styleTile(currentRow, index, 'correct');
@@ -281,7 +301,7 @@
                     }
                 });
 
-                // Second pass: find present (yellow) and absent (gray) letters
+                // Segunda passagem: encontra letras presentes (amarelas) e ausentes (cinzas)
                 guessLetters.forEach((letter, index) => {
                     if (letter !== solutionLetters[index]) {
                         if (solutionLetters.includes(letter) && letterCounts[letter] > 0) {
@@ -293,7 +313,7 @@
                     }
                 });
 
-                // Check for win/loss after the flip animation completes
+                // Verifica vitória/derrota após a animação de virada completar
                 setTimeout(() => {
                     if (guess === solution.word) {
                         showGameOver(true);
@@ -317,7 +337,7 @@
                 }
             }
 
-            // --- UI UPDATES ---
+            // --- ATUALIZAÇÕES DA INTERFACE ---
             function getTile(row, col) {
                 return grid.children[row * WORD_LENGTH + col];
             }
@@ -366,7 +386,7 @@
 
                 if (statePriority[state] > statePriority[currentState]) {
                     keyButton.dataset.state = state;
-                    keyButton.className = keyButton.className.replace(/bg-\w+-\d+/g, ''); // remove old bg
+                    keyButton.className = keyButton.className.replace(/bg-\w+-\d+/g, ''); // remove fundo antigo
                     
                     let keyBgColor;
                     switch (state) {
@@ -394,9 +414,14 @@
                 }, 2000);
             }
 
-            // --- START THE GAME ---
+            // --- INICIA O JOGO ---
             initializeGame();
         });
     </script>
+
+    <!-- Google Arts & Culture Logo -->
+    <a id="google-arts-link" href="https://artsandculture.google.com/partner/crab-sebrae" target="_blank" rel="noopener noreferrer" class="fixed bottom-4 right-4 z-30 cursor-pointer" title="Google Arts & Culture">
+        <img src="img/Google-Arts-Culture-Logo.png" alt="Google Arts & Culture" style="height: 100px; object-fit: contain;" />
+    </a>
 </body>
 </html>
